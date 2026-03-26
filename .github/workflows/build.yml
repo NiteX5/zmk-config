@@ -1,6 +1,33 @@
 name: Build ZMK firmware
+
 on: [push, pull_request, workflow_dispatch]
 
 jobs:
   build:
-    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@v0.3
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install west
+        run: pip3 install west
+
+      - name: Init workspace
+        run: |
+          west init -l config
+          west update
+
+      - name: Build (left)
+        run: |
+          west build -s zmk/app -b nice_nano_v2 -- \
+            -DSHIELD=corne_left \
+            -DZMK_CONFIG=$GITHUB_WORKSPACE/config \
+            -DZMK_EXTRA_MODULES="$GITHUB_WORKSPACE/zmk-nice-oled"
+
+      - name: Build (right)
+        run: |
+          west build -s zmk/app -b nice_nano_v2 -- \
+            -DSHIELD=corne_right \
+            -DZMK_CONFIG=$GITHUB_WORKSPACE/config \
+            -DZMK_EXTRA_MODULES="$GITHUB_WORKSPACE/zmk-nice-oled"
