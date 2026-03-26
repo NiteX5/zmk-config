@@ -22,12 +22,10 @@ jobs:
         run: |
           west build -s zmk/app -b nice_nano_v2 -- \
             -DSHIELD=corne_left \
-            -DZMK_CONFIG=$GITHUB_WORKSPACE/config \
-            -DZMK_EXTRA_MODULES="$GITHUB_WORKSPACE/zmk-nice-oled"
+            -DZMK_CONFIG=$GITHUB_WORKSPACE/config
 
       - name: Build (right)
         run: |
           west build -s zmk/app -b nice_nano_v2 -- \
             -DSHIELD=corne_right \
-            -DZMK_CONFIG=$GITHUB_WORKSPACE/config \
-            -DZMK_EXTRA_MODULES="$GITHUB_WORKSPACE/zmk-nice-oled"
+            -DZMK_CONFIG=$GITHUB_WORKSPACE/config
